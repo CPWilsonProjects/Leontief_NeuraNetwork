@@ -3,8 +3,8 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from model import NeuralNetwork
-from model import GetDemand
+from Source.model import NeuralNetwork
+from Source.model import GetDemand
 
 n_region = 2
 n_industry = 3

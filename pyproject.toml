@@ -1,8 +1,6 @@
-toml
-
 [build-system]
 requires = ["setuptools>=61.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "my-project"
@@ -15,3 +13,6 @@ dependencies = [
     "torch>=2.0",
     "torchvision>=0.15"
 ]
+
+[tool.setuptools.packages.find]
+include = ["Source*"]
