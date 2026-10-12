@@ -7,7 +7,7 @@ name = "Leontief_NeuralNetwork"
 version = "1.0.0"
 description = "A Leontief input/output model with a regional trade matrix optimised by machine learning"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.13.5"
 dependencies = [
     "torch>=2.1.0",
     "torchvision>=0.16.0",
