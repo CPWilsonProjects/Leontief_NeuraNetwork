@@ -46,4 +46,4 @@ for ii in range(epochs):
     optimiser.step()
     optimiser.zero_grad()
 
-stop = 1
+print(loss_tracker)
