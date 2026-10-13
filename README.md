@@ -12,7 +12,7 @@ where $X$ is a stacked vector of total demand and $D$ is final end-consumer dema
 
 ### Multiregional input-output model
 When interregional trade is included, a simple approach to modelling resource redistribution is as follows:
-$$ X = C(AX + D)$$
+$$ X = C(AX + D) $$
 where the trade matrix $C$ ($n_{sector} n_{region}\times n_{sector} n_{region}$) is a Markov matrix that redistributes technology input requirements ($A$) and final demand ($D$) to sectors of other regions.
 
 For each column $C_i$, all elements must be zero except those corresponding to the same sector across all regions ($C_{i,i}, C_{i,i+n_{sector}},...$). All columns sum to one.
