@@ -29,10 +29,10 @@ class NeuralNetwork(nn.Module):
         return trade_optim
 
 class GetDemand(nn.Module):
-    def __init__(self, tech_mat, final_desire, n_region):
+    def __init__(self, tech_mat, final_demand, n_region):
         super().__init__()
         self.tech_mat = tech_mat.detach().clone()
-        self.final_desire = final_desire.detach().clone()
+        self.final_demand = final_demand.detach().clone()
         self.n_region = n_region
         self.n_industry = int(self.tech_mat.shape[0]/self.n_region)
         self.trade_indices = torch.empty(self.n_region, self.n_region*self.n_industry, dtype=torch.int64)
@@ -45,7 +45,7 @@ class GetDemand(nn.Module):
     def forward(self, trade_coeffs):
         self.trade_mat = torch.zeros_like(self.tech_mat).scatter_(0, self.trade_indices, trade_coeffs)
         techtrade_mat = torch.matmul(self.trade_mat, self.tech_mat)
-        final_demand = torch.matmul(self.trade_mat, self.final_desire)
-        total_demand = torch.linalg.solve(torch.eye(self.trade_mat.shape[0]) - techtrade_mat, final_demand)
+        final_traded_demand = torch.matmul(self.trade_mat, self.final_demand)
+        total_demand = torch.linalg.solve(torch.eye(self.trade_mat.shape[0]) - techtrade_mat, final_traded_demand)
         return total_demand
 
