@@ -24,7 +24,7 @@ where the trade matrix $`C`$ ($`n_{sector} n_{region}\times n_{sector} n_{region
 For each column $C_i$, all elements must be zero except those corresponding to the same sector across all regions ($C_{i,i}, C_{i,i+n_{sector}},...$). All columns sum to one.
 
 ### Artificial Neural Network
-The artificial neural network nonlinearly transforms the non-zero elements of the trade matrix $C$, initialised with equal imports from all regions, to create a new matrix $C^* $ subject to the constraints above.
+The artificial neural network nonlinearly transforms the non-zero elements of the trade matrix $`C`$, initialised with equal imports from all regions, to create a new matrix $`C^*`$ subject to the constraints above.
 
 The loss function is the sum of total demand ($`X^*`$, converted to units of labour) required to meet the preassigned final demand ($`D`$) given the technology matrix ($`A`$) and new trade matrix ($`C^*`$):
 
