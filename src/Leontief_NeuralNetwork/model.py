@@ -14,11 +14,11 @@ class NeuralNetwork(nn.Module):
         self.input_size = self.n_region*self.n_region*self.n_industry
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(self.input_size, 20),
+            nn.Linear(self.input_size, 2*self.input_size),
             nn.ReLU(),
-            nn.Linear(20, 20),
+            nn.Linear(2*self.input_size, 2*self.input_size),
             nn.ReLU(),
-            nn.Linear(20, self.input_size),
+            nn.Linear(2*self.input_size, self.input_size),
         )
 
     def forward(self, x):
@@ -41,10 +41,6 @@ class GetDemand(nn.Module):
         for ii in range(self.n_industry):
             row_indices = self.n_industry*torch.arange(0, self.n_region, dtype=self.trade_indices.dtype) + ii
             self.trade_indices[:, row_indices] = row_indices.unsqueeze(1)
-
-            # for jj in range(self.n_region):
-                # col_values = torch.cat([row_indices[0:jj], row_indices[jj+1:]])
-                # self.trade_indices[:, row_indices[jj]] = col_values
 
     def forward(self, trade_coeffs):
         self.trade_mat = torch.zeros_like(self.tech_mat).scatter_(0, self.trade_indices, trade_coeffs)

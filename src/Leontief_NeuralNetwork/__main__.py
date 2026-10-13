@@ -43,14 +43,15 @@ for ii in range(epochs):
     trade_coeffs = trade_coeffs.detach().requires_grad_(True)
     trade_coeffs_opt = nn_obj(trade_coeffs)
     total_demand_opt = gd_obj(trade_coeffs_opt)
-    loss = sum(total_demand_opt)
+    total_production_opt = total_demand_opt/yield_per_unit_production
+    loss = sum(total_production_opt)
     loss_tracker[ii] = loss
 
     loss.backward()
     optimiser.step()
     optimiser.zero_grad()
 
-# Plotting
+# Visualisation
 techtrade_mat = torch.matmul(gd_obj.trade_mat, gd_obj.tech_mat).detach()
 final_demand = torch.matmul(gd_obj.trade_mat, final_desire).detach()
 final_desire_mat = final_desire.diag().detach()
@@ -65,13 +66,13 @@ techtrade_network = pyvis.network.Network(height='750px', width='100%', bgcolor=
 nodes = n_region*['wood', 'mine', 'farm']
 colour = n_industry*["#ff005d"] + n_industry*["#00D9FF"]
 
-tech_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=total_demand.numpy().tolist(), color=colour)
-techtrade_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=total_demand_opt.numpy().tolist(), color=colour)
+tech_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=final_desire.numpy().tolist(), color=colour)
+techtrade_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=final_demand.numpy().tolist(), color=colour)
 
 for ii in range(techtrade_mat.shape[0]):
     for jj in range(techtrade_mat.shape[1]):
-        edge = (inter_demand_mat[ii, jj] + final_desire_mat[ii, jj]).item()
-        edge_opt = (inter_demand_mat_opt[ii, jj] + final_demand_mat[ii, jj]).item()
+        edge = (inter_demand_mat[ii, jj]).item()
+        edge_opt = (inter_demand_mat_opt[ii, jj]).item()
 
         if edge > 1E-3:
             tech_network.add_edge(ii, jj, value=edge)
@@ -86,4 +87,3 @@ techtrade_network.show('network_opt.html')
 
 webbrowser.open("file://" + os.path.abspath("network.html"))
 webbrowser.open("file://" + os.path.abspath("network_opt.html"))
-stop = 1
