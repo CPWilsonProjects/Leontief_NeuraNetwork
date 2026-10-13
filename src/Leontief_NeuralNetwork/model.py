@@ -36,6 +36,7 @@ class GetDemand(nn.Module):
         self.n_region = n_region
         self.n_industry = int(self.tech_mat.shape[0]/self.n_region)
         self.trade_indices = torch.empty(self.n_region, self.n_region*self.n_industry, dtype=torch.int64)
+        self.trade_mat = torch.zeros_like(self.tech_mat)
 
         for ii in range(self.n_industry):
             row_indices = self.n_industry*torch.arange(0, self.n_region, dtype=self.trade_indices.dtype) + ii
@@ -46,9 +47,9 @@ class GetDemand(nn.Module):
                 # self.trade_indices[:, row_indices[jj]] = col_values
 
     def forward(self, trade_coeffs):
-        trade_mat = torch.zeros_like(self.tech_mat).scatter_(0, self.trade_indices, trade_coeffs)
-        techtrade_mat = torch.matmul(trade_mat, self.tech_mat)
-        final_demand = torch.matmul(trade_mat, self.final_desire)
-        total_demand = torch.linalg.solve(torch.eye(trade_mat.shape[0]) - techtrade_mat, final_demand)
+        self.trade_mat = torch.zeros_like(self.tech_mat).scatter_(0, self.trade_indices, trade_coeffs)
+        techtrade_mat = torch.matmul(self.trade_mat, self.tech_mat)
+        final_demand = torch.matmul(self.trade_mat, self.final_desire)
+        total_demand = torch.linalg.solve(torch.eye(self.trade_mat.shape[0]) - techtrade_mat, final_demand)
         return total_demand
 
