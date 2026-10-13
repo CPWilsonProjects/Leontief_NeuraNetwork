@@ -6,13 +6,17 @@ Finds an optimised trade matrix in a multiregionional Leontief input-output mode
 
 For isolated economies, the input-output model is described by:
 
-$$ X = AX + D$$
+$$
+X = AX + D
+$$
 
 where $X$ is a stacked vector of total demand and $D$ is final end-consumer demand from each sector in each region ($n_{sector} n_{region}\times 1$). $A$ is a block technology matrix containing $n_{region}^2$ submatrices $A_{ij}$ ($n_{sector}\times n_{sector}$). Only diagonal submatrices ($A_{ii}$) are non-zero. The columns of $A_{ii}$ are the represent domestic inputs from each sector required to produce a unit of output from the sector corresponding to that column. $A$ and $D$ are known *a priori* in this model.
 
 ### Multiregional input-output model
 When interregional trade is included, a simple approach to modelling resource redistribution is as follows:
-$$ X = C(AX + D) $$
+$$
+X = C(AX + D) 
+$$
 where the trade matrix $C$ ($n_{sector} n_{region}\times n_{sector} n_{region}$) is a Markov matrix that redistributes technology input requirements ($A$) and final demand ($D$) to sectors of other regions.
 
 For each column $C_i$, all elements must be zero except those corresponding to the same sector across all regions ($C_{i,i}, C_{i,i+n_{sector}},...$). All columns sum to one.
@@ -22,8 +26,12 @@ The artificial neural network nonlinearly transforms the non-zero elements of th
 
 The loss function is the sum of total demand ($X$, converted to units of labour) required to meet the preassigned final demand ($D$) given the technology matrix ($A$):
 
-$$ X^* = (I - C^*A)^{-1}C^*D$$
-$$\text{Loss} = \text{Sum}(X^*_{\text{labour units}})$$
+$$ 
+X^* = (I - C^*A)^{-1}C^*D
+$$
+$$
+\text{Loss} = \text{Sum}(X^*_{\text{labour units}})
+$$
 
 The gradient of the loss function is backpropagated through the ANN, and so the ANN is trained iteratively on the initial trade matrix to produce an optimised $C^*$.
 
