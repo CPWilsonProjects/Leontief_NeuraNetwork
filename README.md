@@ -36,7 +36,7 @@ $$
 \text{Loss} = \text{Sum}(X^*_{\text{labour units}})
 $$
 
-The gradient of the loss function with respect to $C$ is backpropagated through the ($X^*$) calculation and then through the ANN, and so the ANN is trained iteratively on the initial trade matrix to produce an optimised $C^*$.
+The gradient of the loss function with respect to $C$ is backpropagated through the $X^*$ calculation and then through the ANN, and so the ANN is trained iteratively on the initial trade matrix to produce an optimised $C^*$.
 
 ### Visual output for two regions and three sectors:
 Isolated economies:
