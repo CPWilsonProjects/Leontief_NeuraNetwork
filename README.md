@@ -8,7 +8,7 @@ For isolated economies, the input-output model is described by:
 
 $$ X = AX + D$$
 
-where $X$ is a stacked vector of total demand and $D$ is final end-consumer demand from each sector in each region ($n_{sector} n_{region}\times 1$). $A$ is a block technology matrix containing $n_{region}^2$ submatrices $A_{ij}$ ($n_{sector}\times n_{sector}$). Only diagonal submatrices ($A_{ii}$) are non-zero. The columns of $A_{ii}$ are the represent domestic inputs required to produce a unit of output. $A$ and $D$ are known *a priori* in this model.
+where $X$ is a stacked vector of total demand and $D$ is final end-consumer demand from each sector in each region ($n_{sector} n_{region}\times 1$). $A$ is a block technology matrix containing $n_{region}^2$ submatrices $A_{ij}$ ($n_{sector}\times n_{sector}$). Only diagonal submatrices ($A_{ii}$) are non-zero. The columns of $A_{ii}$ are the represent domestic inputs from each sector required to produce a unit of output from the sector corresponding to that column. $A$ and $D$ are known *a priori* in this model.
 
 ### Multiregional input-output model
 When interregional trade is included, a simple approach to modelling resource redistribution is as follows:
