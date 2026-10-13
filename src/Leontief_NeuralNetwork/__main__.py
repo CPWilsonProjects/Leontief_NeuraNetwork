@@ -26,9 +26,9 @@ advantage = torch.tensor([[1, 0, 0],
 yield_per_unit_production = (base_yield_per_unit_production + advantage).reshape(n_region*n_industry)
 tech_mat = torch.kron(torch.eye(n_region), cost_per_unit_production)/yield_per_unit_production
 
-final_desire = torch.tensor([4, 2, 3, 6, 2, 4], dtype=torch.float32)
+final_demand = torch.tensor([4, 2, 3, 6, 2, 4], dtype=torch.float32)
 
-gd_obj = GetDemand(tech_mat, final_desire, n_region)
+gd_obj = GetDemand(tech_mat, final_demand, n_region)
 nn_obj = NeuralNetwork(n_region, n_industry)
 
 trade_coeffs = torch.ones(1, n_region, n_region*n_industry, dtype=torch.float32, requires_grad=True)/2
@@ -53,11 +53,11 @@ for ii in range(epochs):
 
 # Visualisation
 techtrade_mat = torch.matmul(gd_obj.trade_mat, gd_obj.tech_mat).detach()
-final_demand = torch.matmul(gd_obj.trade_mat, final_desire).detach()
-final_desire_mat = final_desire.diag().detach()
-final_demand_mat = torch.matmul(gd_obj.trade_mat, final_desire.diag()).detach()
-total_demand = torch.linalg.solve(torch.eye(tech_mat.shape[0]) - tech_mat, final_desire).detach()
-total_demand_opt = torch.linalg.solve(torch.eye(tech_mat.shape[0]) - techtrade_mat, final_demand).detach()
+final_traded_demand = torch.matmul(gd_obj.trade_mat, final_demand).detach()
+final_demand_mat = final_demand.diag().detach()
+final_traded_demand_mat = torch.matmul(gd_obj.trade_mat, final_demand.diag()).detach()
+total_demand = torch.linalg.solve(torch.eye(tech_mat.shape[0]) - tech_mat, final_demand).detach()
+total_demand_opt = torch.linalg.solve(torch.eye(tech_mat.shape[0]) - techtrade_mat, final_traded_demand).detach()
 inter_demand_mat = torch.matmul(tech_mat, total_demand.diag()).detach()
 inter_demand_mat_opt = torch.matmul(techtrade_mat, total_demand_opt.diag()).detach()
 
@@ -66,8 +66,8 @@ techtrade_network = pyvis.network.Network(height='750px', width='100%', bgcolor=
 nodes = n_region*['wood', 'mine', 'farm']
 colour = n_industry*["#ff005d"] + n_industry*["#00D9FF"]
 
-tech_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=final_desire.numpy().tolist(), color=colour)
-techtrade_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=final_demand.numpy().tolist(), color=colour)
+tech_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=final_demand.numpy().tolist(), color=colour)
+techtrade_network.add_nodes(list(range(n_region*n_industry)), label=nodes, size=final_traded_demand.numpy().tolist(), color=colour)
 
 for ii in range(techtrade_mat.shape[0]):
     for jj in range(techtrade_mat.shape[1]):
