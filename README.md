@@ -26,7 +26,7 @@ For each column $C_i$, all elements must be zero except those corresponding to t
 ### Artificial Neural Network
 The artificial neural network nonlinearly transforms the non-zero elements of the trade matrix $C$, initialised with equal imports from all regions, to create a new matrix $C^*$ subject to the constraints above.
 
-The loss function is the sum of total demand ($X$, converted to units of labour) required to meet the preassigned final demand ($D$) given the technology matrix ($A$):
+The loss function is the sum of total demand ($X^*$, converted to units of labour) required to meet the preassigned final demand ($D$) given the technology matrix ($A$) and new trade matrix ($C^*$):
 
 $$ 
 X^* = (I - C^*A)^{-1}C^*D
@@ -36,7 +36,7 @@ $$
 \text{Loss} = \text{Sum}(X^*_{\text{labour units}})
 $$
 
-The gradient of the loss function is backpropagated through the ANN, and so the ANN is trained iteratively on the initial trade matrix to produce an optimised $C^*$.
+The gradient of the loss function with respect to $C$ is backpropagated through the ($X^*$) calculation and then through the ANN, and so the ANN is trained iteratively on the initial trade matrix to produce an optimised $C^*$.
 
 ### Visual output for two regions and three sectors:
 Isolated economies:
